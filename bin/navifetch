@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+D="$HOME/.config/fastfetch"
+cols=${COLUMNS:-$(tput cols 2>/dev/null || echo 80)}
+rows=${LINES:-$(tput lines 2>/dev/null || echo 24)}
+
+pick() {
+    if   (( cols >= 120 && rows >= 30 )); then echo "xl 60"
+    elif (( cols >= 110 && rows >= 26 )); then echo "xl 52"
+    elif (( cols >= 92  && rows >= 20 )); then echo "l 42"
+    elif (( cols >= 74  && rows >= 15 )); then echo "m 32"
+    elif (( cols >= 62  && rows >= 13 )); then echo "s 26"
+    else echo "none 0"; fi
+}
+case $1 in
+    xl) set -- xl 60 ;; l) set -- l 42 ;; m) set -- m 32 ;; s) set -- s 26 ;;
+    *)  set -- $(pick) ;;
+esac
+if [[ $1 == none ]]; then
+    q=("present day, present time." "let's all love lain." "close the world, open the nExt."
+       "no matter where you go, everyone's connected." "the wired is not the real world.")
+    printf '\e[38;2;56;84;117m::\e[0m \e[38;2;92;154;196m%s\e[0m\n' "${q[RANDOM % ${#q[@]}]}"
+    exit 0
+fi
+exec fastfetch -c "$D/tiers/$1.jsonc" --logo "$D/logos/navi-$2.txt" --logo-type file

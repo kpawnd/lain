@@ -1,0 +1,12 @@
+configuration {
+    modi: "drun,run,window";
+    terminal: "alacritty";
+    show-icons: false;
+    display-drun: "apps";
+    display-run:  "run";
+    display-window: "windows";
+    drun-display-format: "{name}";
+    font: "JetBrainsMono Nerd Font 11";
+    dpi: 1;
+}
+@theme "~/.config/rofi/navi.rasi"

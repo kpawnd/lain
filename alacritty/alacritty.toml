@@ -1,0 +1,134 @@
+[env]
+TERM = "xterm-256color"
+COLORTERM = "truecolor"
+
+[window]
+padding = { x = 14, y = 10 }
+dynamic_padding = true
+opacity = 0.90
+blur = true
+dynamic_title = true
+title = "wired"
+class = { instance = "Alacritty", general = "Alacritty" }
+
+[scrolling]
+history = 50000
+multiplier = 3
+
+[font]
+
+size = 11.0
+normal      = { family = "JetBrainsMono Nerd Font", style = "Regular" }
+bold        = { family = "JetBrainsMono Nerd Font", style = "Bold" }
+italic      = { family = "JetBrainsMono Nerd Font", style = "Italic" }
+bold_italic = { family = "JetBrainsMono Nerd Font", style = "Bold Italic" }
+offset = { x = 0, y = 2 }
+glyph_offset = { x = 0, y = 1 }
+builtin_box_drawing = true
+
+[cursor]
+style = { shape = "Block", blinking = "On" }
+vi_mode_style = { shape = "Underline", blinking = "Off" }
+blink_interval = 650
+blink_timeout = 0
+unfocused_hollow = true
+thickness = 0.18
+
+[selection]
+save_to_clipboard = true
+semantic_escape_chars = ",│`|:\"' ()[]{}<>\t"
+
+[mouse]
+hide_when_typing = true
+
+[bell]
+animation = "EaseOutExpo"
+duration = 120
+color = "#1a2c40"
+
+[colors]
+draw_bold_text_with_bright_colors = false
+
+[colors.primary]
+background = "#000000"
+foreground = "#d4d5dd"
+dim_foreground = "#8a96a8"
+
+[colors.cursor]
+text   = "#000000"
+cursor = "#5c9ac4"
+
+[colors.vi_mode_cursor]
+text   = "#000000"
+cursor = "#8ec0e0"
+
+[colors.selection]
+text       = "#000000"
+background = "#5c9ac4"
+
+[colors.search]
+matches       = { foreground = "#000000", background = "#385475" }
+focused_match = { foreground = "#000000", background = "#8ec0e0" }
+
+[colors.hints]
+start = { foreground = "#000000", background = "#8ec0e0" }
+end   = { foreground = "#000000", background = "#385475" }
+
+[colors.footer_bar]
+foreground = "#d4d5dd"
+background = "#031c2b"
+
+[colors.line_indicator]
+foreground = "#000000"
+background = "#5c9ac4"
+
+[colors.normal]
+black   = "#031c2b"
+red     = "#c94f5d"
+green   = "#6fa8b8"
+yellow  = "#a4b4cb"
+blue    = "#385475"
+magenta = "#5c9ac4"
+cyan    = "#7cb3cf"
+white   = "#d4d5dd"
+
+[colors.bright]
+black   = "#4a6582"
+red     = "#e06a77"
+green   = "#8cc2d0"
+yellow  = "#c4cfe0"
+blue    = "#5b7596"
+magenta = "#8ec0e0"
+cyan    = "#a6d2e6"
+white   = "#ffffff"
+
+[colors.dim]
+black   = "#020f18"
+red     = "#8a3640"
+green   = "#4c7480"
+yellow  = "#707c8d"
+blue    = "#263a51"
+magenta = "#3f6a87"
+cyan    = "#557b8f"
+white   = "#92939a"
+
+[[hints.enabled]]
+command = "xdg-open"
+hyperlinks = true
+post_processing = true
+persist = false
+mouse = { enabled = true }
+binding = { key = "O", mods = "Control|Shift" }
+regex = "(ipfs:|ipns:|magnet:|mailto:|gemini://|gopher://|https://|http://|news:|file:|git://|ssh:|ftp://)[^\u0000-\u001F\u007F-\u009F<>\"\\s{-}\\^⟨⟩`\\\\]+"
+
+[keyboard]
+bindings = [
+  { key = "Return", mods = "Control|Shift", action = "SpawnNewInstance" },
+  { key = "Equals", mods = "Control",       action = "IncreaseFontSize" },
+  { key = "Plus",   mods = "Control|Shift", action = "IncreaseFontSize" },
+  { key = "Minus",  mods = "Control",       action = "DecreaseFontSize" },
+  { key = "Key0",   mods = "Control",       action = "ResetFontSize" },
+  { key = "F",      mods = "Control|Shift", action = "SearchForward" },
+  { key = "Space",  mods = "Control|Shift", action = "ToggleViMode" },
+  { key = "K",      mods = "Control|Shift", action = "ClearHistory" },
+]

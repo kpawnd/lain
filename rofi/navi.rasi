@@ -1,0 +1,30 @@
+* {
+    void:   #000000ee;
+    deep:   #131019;
+    dim:    #5b7596;
+    fg:     #d4d5dd;
+    violet: #5c9ac4;
+    pink:   #a4b4cb;
+    red:    #c23b4e;
+    background-color: transparent;
+    text-color: @fg;
+}
+window {
+    width: 38%;
+    background-color: @void;
+    border: 2px;
+    border-color: @violet;
+    padding: 0;
+}
+mainbox  { children: [ inputbar, listview ]; padding: 16px; spacing: 10px; }
+
+inputbar { children: [ prompt, textbox-sep, entry ]; padding: 6px 4px; border: 0 0 1px 0; border-color: @dim; }
+prompt   { text-color: @pink; }
+textbox-sep { expand: false; str: " > "; text-color: @dim; }
+entry    { placeholder: "search..."; placeholder-color: @dim; cursor: text; }
+listview { lines: 10; columns: 1; fixed-height: true; scrollbar: false; spacing: 2px; }
+element  { padding: 4px 8px; }
+element-text { highlight: bold #a4b4cb; }
+element selected.normal { background-color: @violet; }
+element selected.normal element-text { text-color: #0a090d; }
+element.alternate.normal { background-color: transparent; }

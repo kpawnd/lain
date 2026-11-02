@@ -1,0 +1,93 @@
+{
+  "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
+  "logo": {
+    "type": "file",
+    "color": {
+      "1": "38;2;200;228;242",
+      "2": "38;2;46;70;98",
+      "3": "38;2;124;179;207",
+      "4": "38;2;74;122;160"
+    },
+    "padding": {
+      "top": 0,
+      "left": 2,
+      "right": 3
+    }
+  },
+  "display": {
+    "separator": "  ",
+    "color": {
+      "keys": "38;2;92;154;196",
+      "title": "38;2;142;192;224",
+      "output": "38;2;212;213;221"
+    },
+    "key": {},
+    "percent": {
+      "type": 3,
+      "color": {
+        "green": "38;2;92;154;196",
+        "yellow": "38;2;164;180;203",
+        "red": "38;2;201;79;93"
+      }
+    },
+    "bar": {
+      "char": {
+        "elapsed": "■",
+        "total": "·"
+      },
+      "width": 12,
+      "color": {
+        "elapsed": "38;2;92;154;196",
+        "total": "38;2;38;58;81"
+      },
+      "border": {
+        "left": "",
+        "right": " "
+      }
+    }
+  },
+  "modules": [
+    {
+      "type": "break"
+    },
+    {
+      "type": "break"
+    },
+    {
+      "type": "title",
+      "format": "{#1;38;2;212;213;221}{user-name}{#0;38;2;56;84;117}@{#0;38;2;92;154;196}navi.wired"
+    },
+    {
+      "type": "os",
+      "key": "  os     ",
+      "format": "{name} {arch}"
+    },
+    {
+      "type": "wm",
+      "key": "  wm     ",
+      "format": "{pretty-name}"
+    },
+    {
+      "type": "kernel",
+      "key": "  kernel ",
+      "format": "{release}"
+    },
+    {
+      "type": "uptime",
+      "key": "  up     "
+    },
+    {
+      "type": "memory",
+      "key": "󰍛  mem    ",
+      "format": "{used} / {total}"
+    },
+    {
+      "type": "break"
+    },
+    {
+      "type": "colors",
+      "symbol": "circle",
+      "paddingLeft": 0
+    }
+  ]
+}
