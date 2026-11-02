@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+set -u
+menu() { rofi -dmenu -i -p "$1" -no-custom -theme-str 'window { width: 26%; } listview { lines: 9; }'; }
+note() { notify-send -t 2500 "rog" "$1"; }
+active() { asusctl profile get 2>/dev/null | sed -n 's/^Active profile: //p' | tr 'A-Z' 'a-z'; }
+
+SILENT="40c:5%,50c:10%,60c:18%,68c:30%,74c:45%,80c:65%,86c:85%,92c:100%"
+COOL="30c:15%,40c:25%,50c:35%,60c:50%,70c:70%,75c:85%,80c:100%,90c:100%"
+FULL="30c:100%,40c:100%,50c:100%,60c:100%,70c:100%,80c:100%,90c:100%,100c:100%"
+
+set_fans() {
+    local p; p=$(active)
+    if [ "$1" = factory ]; then
+        asusctl fan-curve --mod-profile "$p" --enable-fan-curves false >/dev/null
+    else
+        for f in cpu gpu; do asusctl fan-curve --mod-profile "$p" --fan "$f" --data "$1" >/dev/null; done
+        asusctl fan-curve --mod-profile "$p" --enable-fan-curves true >/dev/null
+    fi
+}
+
+A=/sys/class/firmware-attributes/asus-armoury/attributes
+gpumode() {
+    if [ "$(cat $A/dgpu_disable/current_value 2>/dev/null)" = 1 ]; then echo "dGPU off"
+    elif [ "$(cat $A/gpu_mux_mode/current_value 2>/dev/null)" = 0 ]; then echo "ultimate"
+    else echo "hybrid"; fi
+}
+limit=$(asusctl battery info 2>/dev/null | grep -o '[0-9]*%' | head -1)
+fanstate=$(asusctl fan-curve --get-enabled 2>/dev/null | grep -q 'enabled: true' && echo custom || echo factory)
+choice=$(printf '%s\n' \
+    "mode   quiet" "mode   balanced" "mode   turbo" \
+    "fans   factory (auto)" "fans   silent" "fans   cool" "fans   max (100%)" \
+    "battery   stop at 60%" "battery   stop at 80%" "battery   stop at 100%" "battery   charge to 100% once" \
+    "gpu   hybrid  (default)" "gpu   ultimate  (nvidia drives the screen)" "gpu   dGPU off  (battery saver)" \
+    | menu "rog [$(active) / fans: $fanstate / bat: ${limit:-?} / gpu: $(gpumode)]") || exit 0
+
+case "$choice" in
+    "mode   quiet")    asusctl profile set quiet >/dev/null && note "mode: quiet" ;;
+    "mode   balanced") asusctl profile set balanced >/dev/null && note "mode: balanced" ;;
+    "mode   turbo")    asusctl profile set performance >/dev/null && note "mode: turbo" ;;
+    "fans   factory"*) set_fans factory && note "fans: factory curve ($(active))" ;;
+    "fans   silent")   set_fans "$SILENT" && note "fans: silent ($(active))" ;;
+    "fans   cool")     set_fans "$COOL" && note "fans: cool ($(active))" ;;
+    "fans   max"*)     set_fans "$FULL" && note "fans: max ($(active)) - pick another to stop" ;;
+    "battery   stop at "*) l=${choice##* at }; asusctl battery limit "${l%\%}" >/dev/null && note "battery stops charging at $l" ;;
+    "battery   charge to 100% once") asusctl battery oneshot >/dev/null && note "charging to 100% once, then back to the limit" ;;
+    "gpu   hybrid"*)
+        asusctl armoury set gpu_mux_mode 1 >/dev/null
+        note "gpu: hybrid. reboot and pick the normal 'Arch Linux' entry" ;;
+    "gpu   ultimate"*)
+        if [ "$(gpumode)" = "dGPU off" ]; then note "the dGPU is off right now: reboot into normal 'Arch Linux' first"
+        else asusctl armoury set gpu_mux_mode 0 >/dev/null && note "gpu: ultimate after reboot (pick the normal 'Arch Linux' entry)"; fi ;;
+    "gpu   dGPU off"*)
+        if [ "$(cat $A/gpu_mux_mode/current_value)" = 0 ]; then asusctl armoury set gpu_mux_mode 1 >/dev/null; fi
+        note "reboot and pick 'Arch Linux (dGPU off)' in the boot menu. the external monitor won't work in that mode." ;;
+esac

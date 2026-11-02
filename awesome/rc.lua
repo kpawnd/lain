@@ -26,7 +26,7 @@ local c    = beautiful.c
 local conf = gears.filesystem.get_configuration_dir()
 
 local terminal = "env WINIT_X11_SCALE_FACTOR=randr alacritty"
-local browser  = os.getenv("HOME") .. "/.local/bin/thorium-browser"
+local browser  = os.getenv("BROWSER") or "thorium-browser"
 local music    = "spotify-launcher"
 local launcher = "rofi -show drun"
 local files    = terminal .. " --class yazi -e yazi"
@@ -359,7 +359,7 @@ end
 
 local help_lines = {
     { "Super + Enter",        "terminal" },
-    { "Super + B",            "thorium browser" },
+    { "Super + B",            "browser" },
     { "Super + S",            "spotify" },
     { "Super + E",            "files (yazi)" },
     { "Super + Space",        "search & open apps" },
@@ -566,7 +566,7 @@ local globalkeys = gears.table.join(
     k({ super }, "s",      function() awful.spawn(music) end),
     k({ super }, "e",      function()
         if has("yazi") then awful.spawn(files)
-        else naughty.notify({ title = "yazi isn't installed", text = "run ~/rice/yazi.sh in a terminal" }) end
+        else naughty.notify({ title = "yazi isn't installed", text = "install yazi to use the file manager" }) end
     end),
     k({ super }, "space",  function() awful.spawn(launcher) end),
     k({ super }, "Tab",    cycle_layout),
@@ -610,7 +610,7 @@ local globalkeys = gears.table.join(
     k({ super, "Shift" }, "s", sh("maim -s | xclip -selection clipboard -t image/png")),
     k({ super }, "v",          function()
         if has("clipmenu") then awful.spawn.with_shell("CM_LAUNCHER=rofi clipmenu")
-        else naughty.notify({ title = "clipboard history isn't installed", text = "run: bash ~/rice/qol.sh" }) end
+        else naughty.notify({ title = "clipboard history isn't installed", text = "install clipmenu" }) end
     end),
     k({ super, "Control" }, "Right", function() awful.tag.incmwfact( 0.05) end),
     k({ super, "Control" }, "Left",  function() awful.tag.incmwfact(-0.05) end),

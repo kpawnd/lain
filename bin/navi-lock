@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+WALL="$HOME/.config/awesome/wallpaper.jpg"
+BG="$HOME/.cache/navi-lock/bg.png"
+SLF=${XSS_SLEEP_LOCK_FD:-}
+nofd() { if [[ -n $SLF ]]; then "$@" {SLF}<&- ; else "$@"; fi; }
+if ! i3lock --version 2>&1 | grep -q '\.c\.'; then exec slock; fi
+pgrep -x i3lock >/dev/null && exit 0
+if [[ ! -f $BG || $WALL -nt $BG || $HOME/.config/navi-lock/bg.lua -nt $BG ]]; then
+    mkdir -p "${BG%/*}"
+    nofd lua5.3 "$HOME/.config/navi-lock/bg.lua" "$WALL" "$BG" 2560 1600 2>/dev/null || BG=""
+fi
+
+nofd playerctl -a pause >/dev/null 2>&1 &
+
+fg=d4d5ddff; ice=e6f1f7ff; acc=5c9ac4ff; acc2=8ec0e0ff; mute=8a96a8cc; dim=4a6582ff; red=e06a77ff; none=00000000
+thin="Inter ExtraLight"; light="Inter Light"; reg="Inter"
+L="x+w*0.085"
+i3lock \
+    ${BG:+--image "$BG" --fill} --color 02070c \
+    --ignore-empty-password --show-failed-attempts \
+    --pass-media-keys --pass-volume-keys --pass-screen-keys \
+    --clock --force-clock \
+    --time-str "%H:%M" --time-font "$thin" --time-size 168 --time-color ${ice} --time-align 1 \
+    --time-pos "$L:y+h*0.56" \
+    --date-str "%A, %-d %B" --date-font "$light" --date-size 30 --date-color ${mute} --date-align 1 \
+    --date-pos "$L+6:y+h*0.56+62" \
+    --greeter-text "present day, present time." --greeter-font "$light" --greeter-size 20 \
+    --greeter-color ${dim} --greeter-align 1 --greeter-pos "$L+6:y+h*0.56-182" \
+    --radius 13 --ring-width 2.5 --ind-pos "$L+19:y+h*0.56+134" \
+    --inside-color ${none} --ring-color ${dim} --line-color ${none} --separator-color ${none} \
+    --keyhl-color ${acc2} --bshl-color ${red} \
+    --insidever-color ${none} --ringver-color ${acc} \
+    --insidewrong-color ${none} --ringwrong-color ${red} \
+    --verif-text "unlocking" --verif-font "$light" --verif-size 22 --verif-color ${acc2} \
+    --verif-align 1 --verif-pos "ix+28:iy+8" \
+    --wrong-text "wrong password" --wrong-font "$light" --wrong-size 22 --wrong-color ${red} \
+    --wrong-align 1 --wrong-pos "ix+28:iy+8" \
+    --noinput-text "" --lock-text "" --lockfailed-text "lock failed" \
+    --modif-color ${mute} --modif-size 18 --modif-align 1 --modif-pos "ix+28:iy+40" \
+    --layout-color ${dim} \
+    "$@" &
+pid=$!
+started=$SECONDS
+[[ -n $SLF ]] && exec {SLF}<&-
+wait $pid; rc=$?
+
+if (( rc != 0 && SECONDS - started < 2 )); then exec slock; fi

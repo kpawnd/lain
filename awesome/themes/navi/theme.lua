@@ -16,7 +16,7 @@ theme.c = {
 local c = theme.c
 
 theme.font      = "JetBrainsMono Nerd Font 10"
-theme.wallpaper = os.getenv("HOME") .. "/Pictures/wallpapers/wallhaven-6d17mw/wallhaven-6d17mw.jpg"
+theme.wallpaper = require("gears").filesystem.get_configuration_dir() .. "wallpaper.jpg"
 
 theme.bg_normal   = c.black
 theme.bg_focus    = c.accent

@@ -17,20 +17,27 @@ A Serial Experiments Lain themed config for [awesome](https://awesomewm.org) 4.3
 
 ```sh
 git clone https://github.com/kpawnd/lain.git
-cp -r lain/awesome ~/.config/awesome
-cp lain/cava/navi ~/.config/cava/navi
-cp lain/fastfetch/navi.txt ~/.config/fastfetch/navi.txt
+cd lain
+cp -r awesome ~/.config/awesome
+mkdir -p ~/.config/cava ~/.config/fastfetch ~/.config/navi-lock ~/.local/bin
+cp cava/navi ~/.config/cava/navi
+cp fastfetch/navi.txt ~/.config/fastfetch/navi.txt
+cp navi-lock/bg.lua ~/.config/navi-lock/bg.lua
+cp bin/navi-lock bin/rog-menu ~/.local/bin/
 ```
 
-Set the wallpaper path in `awesome/themes/navi/theme.lua`.
+Put a wallpaper at `~/.config/awesome/wallpaper.jpg`. Without one the desktop is plain black.
+The browser is `$BROWSER`, falling back to `thorium-browser`.
 
 ## Dependencies
 
 `alacritty` `rofi` `picom` `cava` `playerctl` `pactl` `brightnessctl` `maim` `xclip` `yazi` `btop` `pavucontrol` `JetBrainsMono Nerd Font`
 
+Lock screen: `i3lock-color` (falls back to `slock`), `Inter` font, `lua-lgi`
+
 Optional: `asusctl` `udiskie` `xss-lock` `clipmenu`
 
-Some widgets are written for an ASUS ROG laptop (battery, fans, dGPU, refresh-rate switching).
+Some widgets and `rog-menu` are written for an ASUS ROG laptop (battery, fans, dGPU, refresh-rate switching).
 
 ## Keys
 
@@ -45,3 +52,7 @@ Press `Super + /` to see all keybindings.
 | `Super + 1..5` | workspace |
 | `` Super + ` `` | drop-down terminal |
 | `Super + Esc` | power menu |
+
+## License
+
+[MIT](LICENSE)
